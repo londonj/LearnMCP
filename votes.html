@@ -78,54 +78,51 @@
         .legend-color.democrat {
             background-color: #3498db;
         }
-        .state-list {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            padding: 20px;
-        }
-        .state-card {
+        .map-container {
             background-color: white;
-            padding: 15px;
+            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-top: 20px;
+            text-align: center;
         }
-        .state-name {
-            font-weight: bold;
-            color: #2c3e50;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
+        .us-map {
+            width: 100%;
+            max-width: 1000px;
+            height: auto;
+            margin: 0 auto;
         }
-        .flag {
-            width: 24px;
-            height: 16px;
-            object-fit: cover;
-            border: 1px solid #ddd;
+        .state {
+            fill: #ddd;
+            stroke: #fff;
+            stroke-width: 1;
+            transition: fill 0.3s;
         }
-        .vote-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
+        .state:hover {
+            fill-opacity: 0.8;
+            cursor: pointer;
         }
-        .vote-percentage {
-            font-weight: bold;
-            padding: 4px 8px;
+        .state.republican {
+            fill: #e74c3c;
+        }
+        .state.democrat {
+            fill: #3498db;
+        }
+        .state-label {
+            font-size: 12px;
+            fill: #fff;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 12px;
             border-radius: 4px;
-        }
-        .vote-percentage.republican {
-            background-color: #e74c3c;
-            color: white;
-        }
-        .vote-percentage.democrat {
-            background-color: #3498db;
-            color: white;
-        }
-        .winner {
-            font-size: 0.9em;
-            color: #7f8c8d;
+            font-size: 14px;
+            pointer-events: none;
+            z-index: 1000;
         }
     </style>
 </head>
@@ -153,358 +150,28 @@
                 <span>Democrat (Biden)</span>
             </div>
         </div>
-        <div class="state-list">
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-al.png" alt="Alabama flag">Alabama</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">63.3%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ak.png" alt="Alaska flag">Alaska</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">53.1%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-az.png" alt="Arizona flag">Arizona</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">50.4%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ar.png" alt="Arkansas flag">Arkansas</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">62.4%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ca.png" alt="California flag">California</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">63.5%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-co.png" alt="Colorado flag">Colorado</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">55.4%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ct.png" alt="Connecticut flag">Connecticut</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">59.2%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-de.png" alt="Delaware flag">Delaware</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">58.7%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-fl.png" alt="Florida flag">Florida</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">51.2%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ga.png" alt="Georgia flag">Georgia</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">49.5%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-hi.png" alt="Hawaii flag">Hawaii</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">63.2%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-id.png" alt="Idaho flag">Idaho</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">63.8%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-il.png" alt="Illinois flag">Illinois</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">57.5%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-in.png" alt="Indiana flag">Indiana</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">57.2%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ia.png" alt="Iowa flag">Iowa</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">53.1%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ks.png" alt="Kansas flag">Kansas</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">56.2%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ky.png" alt="Kentucky flag">Kentucky</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">62.1%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-la.png" alt="Louisiana flag">Louisiana</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">58.5%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-me.png" alt="Maine flag">Maine</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">53.1%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-md.png" alt="Maryland flag">Maryland</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">65.4%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ma.png" alt="Massachusetts flag">Massachusetts</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">65.6%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-mi.png" alt="Michigan flag">Michigan</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">50.6%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-mn.png" alt="Minnesota flag">Minnesota</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">52.4%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ms.png" alt="Mississippi flag">Mississippi</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">57.6%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-mo.png" alt="Missouri flag">Missouri</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">56.8%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-mt.png" alt="Montana flag">Montana</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">56.9%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ne.png" alt="Nebraska flag">Nebraska</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">58.7%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-nv.png" alt="Nevada flag">Nevada</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">50.1%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-nh.png" alt="New Hampshire flag">New Hampshire</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">52.7%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-nj.png" alt="New Jersey flag">New Jersey</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">57.3%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-nm.png" alt="New Mexico flag">New Mexico</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">54.3%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ny.png" alt="New York flag">New York</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">60.9%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-nc.png" alt="North Carolina flag">North Carolina</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">49.8%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-nd.png" alt="North Dakota flag">North Dakota</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">65.1%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-oh.png" alt="Ohio flag">Ohio</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">53.3%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ok.png" alt="Oklahoma flag">Oklahoma</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">65.4%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-or.png" alt="Oregon flag">Oregon</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">56.7%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-pa.png" alt="Pennsylvania flag">Pennsylvania</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">50.1%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ri.png" alt="Rhode Island flag">Rhode Island</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">59.4%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-sc.png" alt="South Carolina flag">South Carolina</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">55.1%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-sd.png" alt="South Dakota flag">South Dakota</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">61.8%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-tn.png" alt="Tennessee flag">Tennessee</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">60.7%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-tx.png" alt="Texas flag">Texas</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">52.6%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ut.png" alt="Utah flag">Utah</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">58.1%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-vt.png" alt="Vermont flag">Vermont</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">66.1%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-va.png" alt="Virginia flag">Virginia</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">54.1%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-wa.png" alt="Washington flag">Washington</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">58.4%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-wv.png" alt="West Virginia flag">West Virginia</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">68.6%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-wi.png" alt="Wisconsin flag">Wisconsin</div>
-                <div class="vote-info">
-                    <div class="vote-percentage democrat">49.4%</div>
-                    <div class="winner">Biden</div>
-                </div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-wy.png" alt="Wyoming flag">Wyoming</div>
-                <div class="vote-info">
-                    <div class="vote-percentage republican">69.9%</div>
-                    <div class="winner">Trump</div>
-                </div>
-            </div>
+        <div class="map-container">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Blank_US_Map_%28states_only%29.svg/1200px-Blank_US_Map_%28states_only%29.svg.png" alt="U.S. Map" class="us-map">
         </div>
     </div>
+
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        // Add JavaScript to handle map interactions
+        const tooltip = document.getElementById('tooltip');
+        const map = document.querySelector('.us-map');
+
+        // Add hover effect to the map
+        map.addEventListener('mousemove', (e) => {
+            const rect = map.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Update tooltip position
+            tooltip.style.left = e.clientX + 10 + 'px';
+            tooltip.style.top = e.clientY + 10 + 'px';
+        });
+    </script>
 </body>
 </html> 
