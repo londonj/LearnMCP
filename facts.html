@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U.S. States - Facts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .nav-container {
+            background-color: #2c3e50;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-brand {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-link {
+            color: #ecf0f1;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .nav-link:hover {
+            background-color: #34495e;
+        }
+        .nav-link.active {
+            background-color: #3498db;
+        }
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .state-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+        .state-card {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .state-name {
+            font-weight: bold;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .flag {
+            width: 24px;
+            height: 16px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+        }
+        .fact {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        .fact-title {
+            color: #2c3e50;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-container">
+        <div class="nav-content">
+            <a href="index.html" class="nav-brand">U.S. States</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Capitals</a>
+                <a href="population.html" class="nav-link">Population</a>
+                <a href="facts.html" class="nav-link active">Facts</a>
+            </div>
+        </div>
+    </nav>
+    <div class="main-content">
+        <h1>Interesting Facts About U.S. States</h1>
+        <div class="state-list">
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-al.png" alt="Alabama flag">Alabama</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Yellowhammer (Northern Flicker)</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Camellia</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Alabama was the first state to declare Christmas a legal holiday, in 1836.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ak.png" alt="Alaska flag">Alaska</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Willow Ptarmigan</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Forget-me-not</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Alaska is the only state that can be typed on one row of a traditional QWERTY keyboard.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-az.png" alt="Arizona flag">Arizona</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Cactus Wren</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Saguaro Cactus Blossom</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Arizona is home to the Grand Canyon, one of the Seven Natural Wonders of the World.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ar.png" alt="Arkansas flag">Arkansas</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Mockingbird</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Apple Blossom</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Arkansas is the only state that produces diamonds commercially.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ca.png" alt="California flag">California</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">California Quail</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">California Poppy</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">California's economy is the largest of any state in the U.S. and would be the 5th largest in the world if it were a country.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-co.png" alt="Colorado flag">Colorado</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Lark Bunting</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Rocky Mountain Columbine</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Colorado has the highest average elevation of any state in the U.S.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ct.png" alt="Connecticut flag">Connecticut</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">American Robin</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Mountain Laurel</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">The first hamburger was served in New Haven, Connecticut in 1900.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-de.png" alt="Delaware flag">Delaware</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Blue Hen Chicken</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Peach Blossom</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Delaware was the first state to ratify the U.S. Constitution.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-fl.png" alt="Florida flag">Florida</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Northern Mockingbird</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Orange Blossom</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Florida is the flattest state in the U.S., with the highest point being just 345 feet above sea level.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ga.png" alt="Georgia flag">Georgia</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Brown Thrasher</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Cherokee Rose</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Georgia is the largest state east of the Mississippi River.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-hi.png" alt="Hawaii flag">Hawaii</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Nene (Hawaiian Goose)</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Hibiscus</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Hawaii is the only state that grows coffee commercially.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-id.png" alt="Idaho flag">Idaho</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Mountain Bluebird</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Syringa</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Idaho produces one-third of all potatoes grown in the U.S.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-il.png" alt="Illinois flag">Illinois</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Northern Cardinal</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Violet</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">The first McDonald's restaurant opened in Des Plaines, Illinois in 1955.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-in.png" alt="Indiana flag">Indiana</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Northern Cardinal</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Peony</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Indiana is home to the world's largest Christmas tree, a 221-foot-tall redwood.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ia.png" alt="Iowa flag">Iowa</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Eastern Goldfinch</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Wild Rose</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Iowa produces more corn than any other state in the U.S.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ks.png" alt="Kansas flag">Kansas</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Western Meadowlark</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Sunflower</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Kansas has more miles of highway than any other state.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ky.png" alt="Kentucky flag">Kentucky</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Northern Cardinal</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Goldenrod</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Kentucky produces 95% of the world's bourbon.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-la.png" alt="Louisiana flag">Louisiana</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Brown Pelican</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Magnolia</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Louisiana has the tallest state capitol building in the U.S.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-me.png" alt="Maine flag">Maine</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Chickadee</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">White Pine Cone and Tassel</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Maine produces 90% of the country's toothpick supply.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-md.png" alt="Maryland flag">Maryland</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Baltimore Oriole</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Black-Eyed Susan</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Maryland has the highest median household income of any state.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ma.png" alt="Massachusetts flag">Massachusetts</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Black-Capped Chickadee</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Mayflower</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">The first American lighthouse was built in Boston Harbor in 1716.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-mi.png" alt="Michigan flag">Michigan</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">American Robin</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Apple Blossom</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Michigan has the longest freshwater coastline of any state.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-mn.png" alt="Minnesota flag">Minnesota</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Common Loon</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Pink and White Lady's Slipper</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Minnesota has more than 10,000 lakes.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ms.png" alt="Mississippi flag">Mississippi</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Northern Mockingbird</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Magnolia</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Mississippi is the birthplace of blues music.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-mo.png" alt="Missouri flag">Missouri</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Eastern Bluebird</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Hawthorn</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">The ice cream cone was invented at the 1904 World's Fair in St. Louis.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-mt.png" alt="Montana flag">Montana</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Western Meadowlark</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Bitterroot</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Montana has the largest grizzly bear population in the lower 48 states.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ne.png" alt="Nebraska flag">Nebraska</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Western Meadowlark</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Goldenrod</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Nebraska is the only state with a unicameral legislature.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-nv.png" alt="Nevada flag">Nevada</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Mountain Bluebird</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Sagebrush</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Nevada is the most mountainous state in the U.S.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-nh.png" alt="New Hampshire flag">New Hampshire</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Purple Finch</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Purple Lilac</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">New Hampshire was the first state to have its own state constitution.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-nj.png" alt="New Jersey flag">New Jersey</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Eastern Goldfinch</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Violet</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">New Jersey has the highest population density of any state.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-nm.png" alt="New Mexico flag">New Mexico</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Roadrunner</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Yucca Flower</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">New Mexico has the highest percentage of Hispanic residents of any state.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ny.png" alt="New York flag">New York</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Eastern Bluebird</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Rose</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">New York City was the first capital of the United States.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-nc.png" alt="North Carolina flag">North Carolina</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Northern Cardinal</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Dogwood</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">North Carolina is the birthplace of flight - the Wright brothers made their first flight there.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-nd.png" alt="North Dakota flag">North Dakota</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Western Meadowlark</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Wild Prairie Rose</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">North Dakota produces more sunflowers than any other state.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-oh.png" alt="Ohio flag">Ohio</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Northern Cardinal</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Scarlet Carnation</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Ohio is the birthplace of seven U.S. presidents.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ok.png" alt="Oklahoma flag">Oklahoma</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Scissor-Tailed Flycatcher</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Mistletoe</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Oklahoma has the largest Native American population of any state.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-or.png" alt="Oregon flag">Oregon</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Western Meadowlark</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Oregon Grape</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Oregon has the only state flag with different designs on each side.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-pa.png" alt="Pennsylvania flag">Pennsylvania</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Ruffed Grouse</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Mountain Laurel</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Pennsylvania is the only state that touches both the Great Lakes and the Atlantic Ocean.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ri.png" alt="Rhode Island flag">Rhode Island</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Rhode Island Red Chicken</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Violet</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Rhode Island is the smallest state in the U.S.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-sc.png" alt="South Carolina flag">South Carolina</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Carolina Wren</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Yellow Jessamine</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">South Carolina has the oldest living tree east of the Mississippi River.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-sd.png" alt="South Dakota flag">South Dakota</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Ring-Necked Pheasant</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Pasque Flower</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">South Dakota has more miles of shoreline than the state of Florida.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-tn.png" alt="Tennessee flag">Tennessee</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Northern Mockingbird</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Iris</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Tennessee is the birthplace of country music.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-tx.png" alt="Texas flag">Texas</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Northern Mockingbird</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Bluebonnet</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Texas is the only state that was once an independent country.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ut.png" alt="Utah flag">Utah</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">California Gull</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Sego Lily</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Utah has the highest literacy rate of any state.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-vt.png" alt="Vermont flag">Vermont</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Hermit Thrush</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Red Clover</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Vermont was the first state to abolish slavery.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-va.png" alt="Virginia flag">Virginia</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Northern Cardinal</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">American Dogwood</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Virginia has produced more U.S. presidents than any other state.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-wa.png" alt="Washington flag">Washington</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Willow Goldfinch</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Coast Rhododendron</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Washington produces more apples than any other state.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-wv.png" alt="West Virginia flag">West Virginia</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Northern Cardinal</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Rhododendron</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">West Virginia was the first state to have a sales tax.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-wi.png" alt="Wisconsin flag">Wisconsin</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">American Robin</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Wood Violet</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Wisconsin produces more cheese than any other state.</div>
+            </div>
+            <div class="state-card">
+                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-wy.png" alt="Wyoming flag">Wyoming</div>
+                <div class="fact-title">State Bird</div>
+                <div class="fact">Western Meadowlark</div>
+                <div class="fact-title">State Flower</div>
+                <div class="fact">Indian Paintbrush</div>
+                <div class="fact-title">Fun Fact</div>
+                <div class="fact">Wyoming was the first state to grant women the right to vote.</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
