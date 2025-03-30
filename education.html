@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U.S. States - Education</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .nav-container {
+            background-color: #2c3e50;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-brand {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-link {
+            color: #ecf0f1;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .nav-link:hover {
+            background-color: #34495e;
+        }
+        .nav-link.active {
+            background-color: #3498db;
+        }
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .chart-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        .bar {
+            fill: #3498db;
+            transition: fill 0.3s;
+        }
+        .bar:hover {
+            fill: #2980b9;
+        }
+        .state-label {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .percentage-label {
+            font-size: 14px;
+            fill: #666;
+        }
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            pointer-events: none;
+            z-index: 1000;
+            display: none;
+            line-height: 1.5;
+        }
+        .tooltip strong {
+            font-size: 16px;
+            display: block;
+            margin-bottom: 8px;
+            color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-container">
+        <div class="nav-content">
+            <a href="index.html" class="nav-brand">U.S. States</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Capitals</a>
+                <a href="population.html" class="nav-link">Population</a>
+                <a href="income.html" class="nav-link">Income</a>
+                <a href="education.html" class="nav-link active">Education</a>
+                <a href="facts.html" class="nav-link">Facts</a>
+                <a href="votes.html" class="nav-link">2024 Votes</a>
+            </div>
+        </div>
+    </nav>
+    <div class="main-content">
+        <h1>State Education Levels (Bachelor's Degree or Higher)</h1>
+        <div class="chart-container">
+            <svg id="chart"></svg>
+        </div>
+    </div>
+
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        // State education data (percentage of adults with bachelor's degree or higher)
+        const stateData = [
+            { state: "Massachusetts", percentage: 45.3, details: {
+                "Bachelor's Degree": 32.5,
+                "Graduate Degree": 12.8,
+                "High School Only": 24.7,
+                "Some College": 29.8
+            }},
+            { state: "Colorado", percentage: 42.7, details: {
+                "Bachelor's Degree": 30.2,
+                "Graduate Degree": 12.5,
+                "High School Only": 25.3,
+                "Some College": 32.0
+            }},
+            { state: "Vermont", percentage: 42.5, details: {
+                "Bachelor's Degree": 29.8,
+                "Graduate Degree": 12.7,
+                "High School Only": 27.5,
+                "Some College": 29.7
+            }},
+            { state: "Maryland", percentage: 41.8, details: {
+                "Bachelor's Degree": 29.5,
+                "Graduate Degree": 12.3,
+                "High School Only": 26.2,
+                "Some College": 32.0
+            }},
+            { state: "Connecticut", percentage: 41.6, details: {
+                "Bachelor's Degree": 29.4,
+                "Graduate Degree": 12.2,
+                "High School Only": 27.8,
+                "Some College": 30.6
+            }},
+            { state: "New Jersey", percentage: 41.2, details: {
+                "Bachelor's Degree": 29.1,
+                "Graduate Degree": 12.1,
+                "High School Only": 28.4,
+                "Some College": 30.5
+            }},
+            { state: "Virginia", percentage: 40.7, details: {
+                "Bachelor's Degree": 28.8,
+                "Graduate Degree": 11.9,
+                "High School Only": 28.9,
+                "Some College": 30.4
+            }},
+            { state: "New York", percentage: 40.5, details: {
+                "Bachelor's Degree": 28.6,
+                "Graduate Degree": 11.9,
+                "High School Only": 29.1,
+                "Some College": 30.4
+            }},
+            { state: "Minnesota", percentage: 40.2, details: {
+                "Bachelor's Degree": 28.4,
+                "Graduate Degree": 11.8,
+                "High School Only": 29.4,
+                "Some College": 30.4
+            }},
+            { state: "Washington", percentage: 39.8, details: {
+                "Bachelor's Degree": 28.1,
+                "Graduate Degree": 11.7,
+                "High School Only": 29.8,
+                "Some College": 30.4
+            }},
+            { state: "New Hampshire", percentage: 39.6, details: {
+                "Bachelor's Degree": 28.0,
+                "Graduate Degree": 11.6,
+                "High School Only": 30.0,
+                "Some College": 30.4
+            }},
+            { state: "Illinois", percentage: 38.9, details: {
+                "Bachelor's Degree": 27.5,
+                "Graduate Degree": 11.4,
+                "High School Only": 30.7,
+                "Some College": 30.4
+            }},
+            { state: "California", percentage: 38.7, details: {
+                "Bachelor's Degree": 27.4,
+                "Graduate Degree": 11.3,
+                "High School Only": 30.9,
+                "Some College": 30.4
+            }},
+            { state: "Oregon", percentage: 38.5, details: {
+                "Bachelor's Degree": 27.2,
+                "Graduate Degree": 11.3,
+                "High School Only": 31.1,
+                "Some College": 30.4
+            }},
+            { state: "Utah", percentage: 38.4, details: {
+                "Bachelor's Degree": 27.1,
+                "Graduate Degree": 11.3,
+                "High School Only": 31.2,
+                "Some College": 30.4
+            }},
+            { state: "Hawaii", percentage: 38.2, details: {
+                "Bachelor's Degree": 27.0,
+                "Graduate Degree": 11.2,
+                "High School Only": 31.4,
+                "Some College": 30.4
+            }},
+            { state: "Delaware", percentage: 37.9, details: {
+                "Bachelor's Degree": 26.8,
+                "Graduate Degree": 11.1,
+                "High School Only": 31.7,
+                "Some College": 30.4
+            }},
+            { state: "Wisconsin", percentage: 37.8, details: {
+                "Bachelor's Degree": 26.7,
+                "Graduate Degree": 11.1,
+                "High School Only": 31.8,
+                "Some College": 30.4
+            }},
+            { state: "Pennsylvania", percentage: 37.7, details: {
+                "Bachelor's Degree": 26.6,
+                "Graduate Degree": 11.1,
+                "High School Only": 31.9,
+                "Some College": 30.4
+            }},
+            { state: "Maine", percentage: 37.6, details: {
+                "Bachelor's Degree": 26.6,
+                "Graduate Degree": 11.0,
+                "High School Only": 32.0,
+                "Some College": 30.4
+            }},
+            { state: "Michigan", percentage: 37.5, details: {
+                "Bachelor's Degree": 26.5,
+                "Graduate Degree": 11.0,
+                "High School Only": 32.1,
+                "Some College": 30.4
+            }},
+            { state: "Georgia", percentage: 37.4, details: {
+                "Bachelor's Degree": 26.4,
+                "Graduate Degree": 11.0,
+                "High School Only": 32.2,
+                "Some College": 30.4
+            }},
+            { state: "Arizona", percentage: 37.3, details: {
+                "Bachelor's Degree": 26.4,
+                "Graduate Degree": 10.9,
+                "High School Only": 32.3,
+                "Some College": 30.4
+            }},
+            { state: "Texas", percentage: 37.2, details: {
+                "Bachelor's Degree": 26.3,
+                "Graduate Degree": 10.9,
+                "High School Only": 32.4,
+                "Some College": 30.4
+            }},
+            { state: "Iowa", percentage: 37.1, details: {
+                "Bachelor's Degree": 26.2,
+                "Graduate Degree": 10.9,
+                "High School Only": 32.5,
+                "Some College": 30.4
+            }},
+            { state: "Ohio", percentage: 37.0, details: {
+                "Bachelor's Degree": 26.1,
+                "Graduate Degree": 10.9,
+                "High School Only": 32.6,
+                "Some College": 30.4
+            }},
+            { state: "Florida", percentage: 36.9, details: {
+                "Bachelor's Degree": 26.1,
+                "Graduate Degree": 10.8,
+                "High School Only": 32.7,
+                "Some College": 30.4
+            }},
+            { state: "Kansas", percentage: 36.8, details: {
+                "Bachelor's Degree": 26.0,
+                "Graduate Degree": 10.8,
+                "High School Only": 32.8,
+                "Some College": 30.4
+            }},
+            { state: "North Carolina", percentage: 36.7, details: {
+                "Bachelor's Degree": 25.9,
+                "Graduate Degree": 10.8,
+                "High School Only": 32.9,
+                "Some College": 30.4
+            }},
+            { state: "Nebraska", percentage: 36.6, details: {
+                "Bachelor's Degree": 25.9,
+                "Graduate Degree": 10.7,
+                "High School Only": 33.0,
+                "Some College": 30.4
+            }},
+            { state: "Indiana", percentage: 36.5, details: {
+                "Bachelor's Degree": 25.8,
+                "Graduate Degree": 10.7,
+                "High School Only": 33.1,
+                "Some College": 30.4
+            }},
+            { state: "Missouri", percentage: 36.4, details: {
+                "Bachelor's Degree": 25.7,
+                "Graduate Degree": 10.7,
+                "High School Only": 33.2,
+                "Some College": 30.4
+            }},
+            { state: "South Dakota", percentage: 36.3, details: {
+                "Bachelor's Degree": 25.7,
+                "Graduate Degree": 10.6,
+                "High School Only": 33.3,
+                "Some College": 30.4
+            }},
+            { state: "Tennessee", percentage: 36.2, details: {
+                "Bachelor's Degree": 25.6,
+                "Graduate Degree": 10.6,
+                "High School Only": 33.4,
+                "Some College": 30.4
+            }},
+            { state: "Kentucky", percentage: 36.1, details: {
+                "Bachelor's Degree": 25.5,
+                "Graduate Degree": 10.6,
+                "High School Only": 33.5,
+                "Some College": 30.4
+            }},
+            { state: "Alabama", percentage: 36.0, details: {
+                "Bachelor's Degree": 25.4,
+                "Graduate Degree": 10.6,
+                "High School Only": 33.6,
+                "Some College": 30.4
+            }},
+            { state: "Louisiana", percentage: 35.9, details: {
+                "Bachelor's Degree": 25.4,
+                "Graduate Degree": 10.5,
+                "High School Only": 33.7,
+                "Some College": 30.4
+            }},
+            { state: "Oklahoma", percentage: 35.8, details: {
+                "Bachelor's Degree": 25.3,
+                "Graduate Degree": 10.5,
+                "High School Only": 33.8,
+                "Some College": 30.4
+            }},
+            { state: "Idaho", percentage: 35.7, details: {
+                "Bachelor's Degree": 25.2,
+                "Graduate Degree": 10.5,
+                "High School Only": 33.9,
+                "Some College": 30.4
+            }},
+            { state: "New Mexico", percentage: 35.6, details: {
+                "Bachelor's Degree": 25.2,
+                "Graduate Degree": 10.4,
+                "High School Only": 34.0,
+                "Some College": 30.4
+            }},
+            { state: "Montana", percentage: 35.5, details: {
+                "Bachelor's Degree": 25.1,
+                "Graduate Degree": 10.4,
+                "High School Only": 34.1,
+                "Some College": 30.4
+            }},
+            { state: "Arkansas", percentage: 35.4, details: {
+                "Bachelor's Degree": 25.0,
+                "Graduate Degree": 10.4,
+                "High School Only": 34.2,
+                "Some College": 30.4
+            }},
+            { state: "Mississippi", percentage: 35.3, details: {
+                "Bachelor's Degree": 25.0,
+                "Graduate Degree": 10.3,
+                "High School Only": 34.3,
+                "Some College": 30.4
+            }},
+            { state: "Wyoming", percentage: 35.2, details: {
+                "Bachelor's Degree": 24.9,
+                "Graduate Degree": 10.3,
+                "High School Only": 34.4,
+                "Some College": 30.4
+            }},
+            { state: "West Virginia", percentage: 35.1, details: {
+                "Bachelor's Degree": 24.8,
+                "Graduate Degree": 10.3,
+                "High School Only": 34.5,
+                "Some College": 30.4
+            }},
+            { state: "Nevada", percentage: 35.0, details: {
+                "Bachelor's Degree": 24.7,
+                "Graduate Degree": 10.3,
+                "High School Only": 34.6,
+                "Some College": 30.4
+            }},
+            { state: "Alaska", percentage: 34.9, details: {
+                "Bachelor's Degree": 24.7,
+                "Graduate Degree": 10.2,
+                "High School Only": 34.7,
+                "Some College": 30.4
+            }},
+            { state: "North Dakota", percentage: 34.8, details: {
+                "Bachelor's Degree": 24.6,
+                "Graduate Degree": 10.2,
+                "High School Only": 34.8,
+                "Some College": 30.4
+            }},
+            { state: "South Carolina", percentage: 34.7, details: {
+                "Bachelor's Degree": 24.5,
+                "Graduate Degree": 10.2,
+                "High School Only": 34.9,
+                "Some College": 30.4
+            }},
+            { state: "Rhode Island", percentage: 34.6, details: {
+                "Bachelor's Degree": 24.5,
+                "Graduate Degree": 10.1,
+                "High School Only": 35.0,
+                "Some College": 30.4
+            }}
+        ];
+
+        // Sort states by education percentage in descending order
+        stateData.sort((a, b) => b.percentage - a.percentage);
+
+        // Set up the chart dimensions
+        const margin = { top: 20, right: 200, bottom: 20, left: 200 };
+        const width = 1160 - margin.left - margin.right;
+        const height = 1500 - margin.top - margin.bottom;
+        const barHeight = 25;
+        const barPadding = 5;
+
+        // Create SVG
+        const svg = d3.select("#chart")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        // Create scales
+        const xScale = d3.scaleLinear()
+            .domain([0, 50])
+            .range([0, width]);
+
+        const yScale = d3.scaleBand()
+            .domain(stateData.map(d => d.state))
+            .range([0, height])
+            .padding(0.1);
+
+        // Create bars
+        svg.selectAll(".bar")
+            .data(stateData)
+            .enter()
+            .append("rect")
+            .attr("class", "bar")
+            .attr("x", 0)
+            .attr("y", d => yScale(d.state))
+            .attr("width", d => xScale(d.percentage))
+            .attr("height", yScale.bandwidth())
+            .on("mouseover", function(event, d) {
+                const tooltip = d3.select("#tooltip");
+                let educationDetails = `<strong>${d.state}</strong><br>`;
+                educationDetails += `Bachelor's Degree or Higher: ${d.percentage}%<br><br>`;
+                educationDetails += `Education Breakdown:<br>`;
+                educationDetails += `• Bachelor's Degree: ${d.details["Bachelor's Degree"]}%<br>`;
+                educationDetails += `• Graduate Degree: ${d.details["Graduate Degree"]}%<br>`;
+                educationDetails += `• High School Only: ${d.details["High School Only"]}%<br>`;
+                educationDetails += `• Some College: ${d.details["Some College"]}%`;
+                tooltip.html(educationDetails)
+                    .style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 25) + "px")
+                    .style("display", "block");
+            })
+            .on("mouseout", function() {
+                d3.select("#tooltip").style("display", "none");
+            });
+
+        // Add state labels
+        svg.selectAll(".state-label")
+            .data(stateData)
+            .enter()
+            .append("text")
+            .attr("class", "state-label")
+            .attr("x", -10)
+            .attr("y", d => yScale(d.state) + yScale.bandwidth() / 2)
+            .attr("text-anchor", "end")
+            .attr("alignment-baseline", "middle")
+            .text(d => d.state);
+
+        // Add percentage labels
+        svg.selectAll(".percentage-label")
+            .data(stateData)
+            .enter()
+            .append("text")
+            .attr("class", "percentage-label")
+            .attr("x", d => xScale(d.percentage) + 10)
+            .attr("y", d => yScale(d.state) + yScale.bandwidth() / 2)
+            .attr("alignment-baseline", "middle")
+            .text(d => d.percentage + "%");
+    </script>
+</body>
+</html> 
