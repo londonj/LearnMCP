@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>U.S. States - 2024 Election Results</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/topojson.v3.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -73,10 +75,10 @@
             border-radius: 4px;
         }
         .legend-color.republican {
-            background-color: #e74c3c;
+            background-color: rgba(231, 76, 60, 0.7);
         }
         .legend-color.democrat {
-            background-color: #3498db;
+            background-color: rgba(52, 152, 219, 0.7);
         }
         .map-container {
             background-color: white;
@@ -86,46 +88,20 @@
             margin-top: 20px;
             text-align: center;
         }
-        .map-wrapper {
-            position: relative;
-        }
-        .us-map {
-            width: 100%;
-            max-width: 1000px;
-            height: auto;
-            margin: 0 auto;
-        }
         .state {
-            position: absolute;
-            background-color: rgba(231, 76, 60, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            transition: background-color 0.3s;
-            cursor: pointer;
+            stroke: #fff;
+            stroke-width: 1px;
+            transition: opacity 0.3s;
         }
         .state:hover {
-            background-color: rgba(231, 76, 60, 0.5);
+            opacity: 0.8;
+            cursor: pointer;
         }
         .state.republican {
-            background-color: rgba(231, 76, 60, 0.3);
-        }
-        .state.republican:hover {
-            background-color: rgba(231, 76, 60, 0.5);
+            fill: rgba(231, 76, 60, 0.7);
         }
         .state.democrat {
-            background-color: rgba(52, 152, 219, 0.3);
-        }
-        .state.democrat:hover {
-            background-color: rgba(52, 152, 219, 0.5);
-        }
-        .state-label {
-            position: absolute;
-            color: #000;
-            font-size: 12px;
-            text-align: center;
-            width: 100%;
-            top: 50%;
-            transform: translateY(-50%);
-            pointer-events: none;
+            fill: rgba(52, 152, 219, 0.7);
         }
         .tooltip {
             position: absolute;
@@ -136,13 +112,15 @@
             font-size: 14px;
             pointer-events: none;
             z-index: 1000;
+            display: none;
         }
-        .state-overlays {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+        .state-label {
+            font-size: 12px;
+            fill: #fff;
+            text-anchor: middle;
+            pointer-events: none;
+            font-weight: bold;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
         }
     </style>
 </head>
@@ -171,141 +149,122 @@
             </div>
         </div>
         <div class="map-container">
-            <div class="map-wrapper">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Blank_US_Map_%28states_only%29.svg/1200px-Blank_US_Map_%28states_only%29.svg.png" alt="U.S. Map" class="us-map">
-                <div class="state-overlays">
-                    <!-- Alaska -->
-                    <div class="state republican" style="left: 5%; top: 10%; width: 10%; height: 10%;" data-state="AK" data-party="republican" data-percentage="53.1"></div>
-                    <!-- Hawaii -->
-                    <div class="state democrat" style="left: 15%; top: 10%; width: 10%; height: 10%;" data-state="HI" data-party="democrat" data-percentage="63.2"></div>
-                    <!-- Washington -->
-                    <div class="state democrat" style="left: 25%; top: 10%; width: 10%; height: 10%;" data-state="WA" data-party="democrat" data-percentage="58.4"></div>
-                    <!-- Oregon -->
-                    <div class="state democrat" style="left: 35%; top: 10%; width: 10%; height: 10%;" data-state="OR" data-party="democrat" data-percentage="56.7"></div>
-                    <!-- California -->
-                    <div class="state democrat" style="left: 45%; top: 10%; width: 10%; height: 10%;" data-state="CA" data-party="democrat" data-percentage="63.5"></div>
-                    <!-- Nevada -->
-                    <div class="state democrat" style="left: 55%; top: 10%; width: 10%; height: 10%;" data-state="NV" data-party="democrat" data-percentage="50.1"></div>
-                    <!-- Idaho -->
-                    <div class="state republican" style="left: 65%; top: 10%; width: 10%; height: 10%;" data-state="ID" data-party="republican" data-percentage="63.8"></div>
-                    <!-- Utah -->
-                    <div class="state republican" style="left: 75%; top: 10%; width: 10%; height: 10%;" data-state="UT" data-party="republican" data-percentage="58.1"></div>
-                    <!-- Arizona -->
-                    <div class="state democrat" style="left: 85%; top: 10%; width: 10%; height: 10%;" data-state="AZ" data-party="democrat" data-percentage="50.4"></div>
-                    <!-- New Mexico -->
-                    <div class="state democrat" style="left: 95%; top: 10%; width: 10%; height: 10%;" data-state="NM" data-party="democrat" data-percentage="54.3"></div>
-                    <!-- Colorado -->
-                    <div class="state democrat" style="left: 5%; top: 20%; width: 10%; height: 10%;" data-state="CO" data-party="democrat" data-percentage="55.4"></div>
-                    <!-- Wyoming -->
-                    <div class="state republican" style="left: 15%; top: 20%; width: 10%; height: 10%;" data-state="WY" data-party="republican" data-percentage="69.9"></div>
-                    <!-- Montana -->
-                    <div class="state republican" style="left: 25%; top: 20%; width: 10%; height: 10%;" data-state="MT" data-party="republican" data-percentage="56.9"></div>
-                    <!-- North Dakota -->
-                    <div class="state republican" style="left: 35%; top: 20%; width: 10%; height: 10%;" data-state="ND" data-party="republican" data-percentage="65.1"></div>
-                    <!-- South Dakota -->
-                    <div class="state republican" style="left: 45%; top: 20%; width: 10%; height: 10%;" data-state="SD" data-party="republican" data-percentage="61.8"></div>
-                    <!-- Nebraska -->
-                    <div class="state republican" style="left: 55%; top: 20%; width: 10%; height: 10%;" data-state="NE" data-party="republican" data-percentage="58.7"></div>
-                    <!-- Kansas -->
-                    <div class="state republican" style="left: 65%; top: 20%; width: 10%; height: 10%;" data-state="KS" data-party="republican" data-percentage="56.2"></div>
-                    <!-- Oklahoma -->
-                    <div class="state republican" style="left: 75%; top: 20%; width: 10%; height: 10%;" data-state="OK" data-party="republican" data-percentage="65.4"></div>
-                    <!-- Texas -->
-                    <div class="state republican" style="left: 85%; top: 20%; width: 10%; height: 10%;" data-state="TX" data-party="republican" data-percentage="52.6"></div>
-                    <!-- Louisiana -->
-                    <div class="state republican" style="left: 95%; top: 20%; width: 10%; height: 10%;" data-state="LA" data-party="republican" data-percentage="58.5"></div>
-                    <!-- Arkansas -->
-                    <div class="state republican" style="left: 5%; top: 30%; width: 10%; height: 10%;" data-state="AR" data-party="republican" data-percentage="62.4"></div>
-                    <!-- Missouri -->
-                    <div class="state republican" style="left: 15%; top: 30%; width: 10%; height: 10%;" data-state="MO" data-party="republican" data-percentage="56.8"></div>
-                    <!-- Iowa -->
-                    <div class="state republican" style="left: 25%; top: 30%; width: 10%; height: 10%;" data-state="IA" data-party="republican" data-percentage="53.1"></div>
-                    <!-- Minnesota -->
-                    <div class="state democrat" style="left: 35%; top: 30%; width: 10%; height: 10%;" data-state="MN" data-party="democrat" data-percentage="52.4"></div>
-                    <!-- Wisconsin -->
-                    <div class="state democrat" style="left: 45%; top: 30%; width: 10%; height: 10%;" data-state="WI" data-party="democrat" data-percentage="49.4"></div>
-                    <!-- Illinois -->
-                    <div class="state democrat" style="left: 55%; top: 30%; width: 10%; height: 10%;" data-state="IL" data-party="democrat" data-percentage="57.5"></div>
-                    <!-- Michigan -->
-                    <div class="state democrat" style="left: 65%; top: 30%; width: 10%; height: 10%;" data-state="MI" data-party="democrat" data-percentage="50.6"></div>
-                    <!-- Indiana -->
-                    <div class="state republican" style="left: 75%; top: 30%; width: 10%; height: 10%;" data-state="IN" data-party="republican" data-percentage="57.2"></div>
-                    <!-- Ohio -->
-                    <div class="state republican" style="left: 85%; top: 30%; width: 10%; height: 10%;" data-state="OH" data-party="republican" data-percentage="53.3"></div>
-                    <!-- Kentucky -->
-                    <div class="state republican" style="left: 95%; top: 30%; width: 10%; height: 10%;" data-state="KY" data-party="republican" data-percentage="62.1"></div>
-                    <!-- Tennessee -->
-                    <div class="state republican" style="left: 5%; top: 40%; width: 10%; height: 10%;" data-state="TN" data-party="republican" data-percentage="60.7"></div>
-                    <!-- Mississippi -->
-                    <div class="state republican" style="left: 15%; top: 40%; width: 10%; height: 10%;" data-state="MS" data-party="republican" data-percentage="57.6"></div>
-                    <!-- Alabama -->
-                    <div class="state republican" style="left: 25%; top: 40%; width: 10%; height: 10%;" data-state="AL" data-party="republican" data-percentage="63.3"></div>
-                    <!-- Georgia -->
-                    <div class="state democrat" style="left: 35%; top: 40%; width: 10%; height: 10%;" data-state="GA" data-party="democrat" data-percentage="49.5"></div>
-                    <!-- Florida -->
-                    <div class="state republican" style="left: 45%; top: 40%; width: 10%; height: 10%;" data-state="FL" data-party="republican" data-percentage="51.2"></div>
-                    <!-- South Carolina -->
-                    <div class="state republican" style="left: 55%; top: 40%; width: 10%; height: 10%;" data-state="SC" data-party="republican" data-percentage="55.1"></div>
-                    <!-- North Carolina -->
-                    <div class="state republican" style="left: 65%; top: 40%; width: 10%; height: 10%;" data-state="NC" data-party="republican" data-percentage="49.8"></div>
-                    <!-- Virginia -->
-                    <div class="state democrat" style="left: 75%; top: 40%; width: 10%; height: 10%;" data-state="VA" data-party="democrat" data-percentage="54.1"></div>
-                    <!-- West Virginia -->
-                    <div class="state republican" style="left: 85%; top: 40%; width: 10%; height: 10%;" data-state="WV" data-party="republican" data-percentage="68.6"></div>
-                    <!-- Maryland -->
-                    <div class="state democrat" style="left: 95%; top: 40%; width: 10%; height: 10%;" data-state="MD" data-party="democrat" data-percentage="65.4"></div>
-                    <!-- Delaware -->
-                    <div class="state democrat" style="left: 5%; top: 50%; width: 10%; height: 10%;" data-state="DE" data-party="democrat" data-percentage="58.7"></div>
-                    <!-- New Jersey -->
-                    <div class="state democrat" style="left: 15%; top: 50%; width: 10%; height: 10%;" data-state="NJ" data-party="democrat" data-percentage="57.3"></div>
-                    <!-- Pennsylvania -->
-                    <div class="state democrat" style="left: 25%; top: 50%; width: 10%; height: 10%;" data-state="PA" data-party="democrat" data-percentage="50.1"></div>
-                    <!-- New York -->
-                    <div class="state democrat" style="left: 35%; top: 50%; width: 10%; height: 10%;" data-state="NY" data-party="democrat" data-percentage="60.9"></div>
-                    <!-- Connecticut -->
-                    <div class="state democrat" style="left: 45%; top: 50%; width: 10%; height: 10%;" data-state="CT" data-party="democrat" data-percentage="59.2"></div>
-                    <!-- Rhode Island -->
-                    <div class="state democrat" style="left: 55%; top: 50%; width: 10%; height: 10%;" data-state="RI" data-party="democrat" data-percentage="59.4"></div>
-                    <!-- Massachusetts -->
-                    <div class="state democrat" style="left: 65%; top: 50%; width: 10%; height: 10%;" data-state="MA" data-party="democrat" data-percentage="65.6"></div>
-                    <!-- Vermont -->
-                    <div class="state democrat" style="left: 75%; top: 50%; width: 10%; height: 10%;" data-state="VT" data-party="democrat" data-percentage="66.1"></div>
-                    <!-- New Hampshire -->
-                    <div class="state democrat" style="left: 85%; top: 50%; width: 10%; height: 10%;" data-state="NH" data-party="democrat" data-percentage="52.7"></div>
-                    <!-- Maine -->
-                    <div class="state democrat" style="left: 95%; top: 50%; width: 10%; height: 10%;" data-state="ME" data-party="democrat" data-percentage="53.1"></div>
-                </div>
-            </div>
+            <svg id="map"></svg>
         </div>
     </div>
 
     <div class="tooltip" id="tooltip"></div>
 
     <script>
-        const tooltip = document.getElementById('tooltip');
-        const states = document.querySelectorAll('.state');
+        const width = 960;
+        const height = 600;
+        const svg = d3.select("#map")
+            .attr("width", width)
+            .attr("height", height);
 
-        states.forEach(state => {
-            state.addEventListener('mouseover', (e) => {
-                const stateName = e.target.getAttribute('data-state');
-                const party = e.target.getAttribute('data-party');
-                const percentage = e.target.getAttribute('data-percentage');
-                const candidate = party === 'republican' ? 'Trump' : 'Biden';
+        const projection = d3.geoAlbersUsa()
+            .scale(1000)
+            .translate([width / 2, height / 2]);
 
-                tooltip.innerHTML = `${stateName}: ${percentage}% ${candidate}`;
-                tooltip.style.left = e.pageX + 10 + 'px';
-                tooltip.style.top = e.pageY + 10 + 'px';
-                tooltip.style.display = 'block';
-            });
+        const path = d3.geoPath()
+            .projection(projection);
 
-            state.addEventListener('mouseout', () => {
-                tooltip.style.display = 'none';
-            });
+        const tooltip = d3.select("#tooltip");
 
-            state.addEventListener('mousemove', (e) => {
-                tooltip.style.left = e.pageX + 10 + 'px';
-                tooltip.style.top = e.pageY + 10 + 'px';
-            });
+        // State election data
+        const stateData = {
+            "AL": { party: "republican", percentage: "63.3" },
+            "AK": { party: "republican", percentage: "53.1" },
+            "AZ": { party: "democrat", percentage: "50.4" },
+            "AR": { party: "republican", percentage: "62.4" },
+            "CA": { party: "democrat", percentage: "63.5" },
+            "CO": { party: "democrat", percentage: "55.4" },
+            "CT": { party: "democrat", percentage: "59.2" },
+            "DE": { party: "democrat", percentage: "58.7" },
+            "FL": { party: "republican", percentage: "51.2" },
+            "GA": { party: "democrat", percentage: "49.5" },
+            "HI": { party: "democrat", percentage: "63.2" },
+            "ID": { party: "republican", percentage: "63.8" },
+            "IL": { party: "democrat", percentage: "57.5" },
+            "IN": { party: "republican", percentage: "57.2" },
+            "IA": { party: "republican", percentage: "53.1" },
+            "KS": { party: "republican", percentage: "56.2" },
+            "KY": { party: "republican", percentage: "62.1" },
+            "LA": { party: "republican", percentage: "58.5" },
+            "ME": { party: "democrat", percentage: "53.1" },
+            "MD": { party: "democrat", percentage: "65.4" },
+            "MA": { party: "democrat", percentage: "65.6" },
+            "MI": { party: "democrat", percentage: "50.6" },
+            "MN": { party: "democrat", percentage: "52.4" },
+            "MS": { party: "republican", percentage: "57.6" },
+            "MO": { party: "republican", percentage: "56.8" },
+            "MT": { party: "republican", percentage: "56.9" },
+            "NE": { party: "republican", percentage: "58.7" },
+            "NV": { party: "democrat", percentage: "50.1" },
+            "NH": { party: "democrat", percentage: "52.7" },
+            "NJ": { party: "democrat", percentage: "57.3" },
+            "NM": { party: "democrat", percentage: "54.3" },
+            "NY": { party: "democrat", percentage: "60.9" },
+            "NC": { party: "republican", percentage: "49.8" },
+            "ND": { party: "republican", percentage: "65.1" },
+            "OH": { party: "republican", percentage: "53.3" },
+            "OK": { party: "republican", percentage: "65.4" },
+            "OR": { party: "democrat", percentage: "56.7" },
+            "PA": { party: "democrat", percentage: "50.1" },
+            "RI": { party: "democrat", percentage: "59.4" },
+            "SC": { party: "republican", percentage: "55.1" },
+            "SD": { party: "republican", percentage: "61.8" },
+            "TN": { party: "republican", percentage: "60.7" },
+            "TX": { party: "republican", percentage: "52.6" },
+            "UT": { party: "republican", percentage: "58.1" },
+            "VT": { party: "democrat", percentage: "66.1" },
+            "VA": { party: "democrat", percentage: "54.1" },
+            "WA": { party: "democrat", percentage: "58.4" },
+            "WV": { party: "republican", percentage: "68.6" },
+            "WI": { party: "democrat", percentage: "49.4" },
+            "WY": { party: "republican", percentage: "69.9" }
+        };
+
+        // Load and display the US map
+        d3.json("https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json").then(function(us) {
+            // Draw the states
+            svg.append("g")
+                .selectAll("path")
+                .data(topojson.feature(us, us.objects.states).features)
+                .enter()
+                .append("path")
+                .attr("class", d => {
+                    const stateInfo = stateData[d.properties.postal];
+                    return `state ${stateInfo ? stateInfo.party : ''}`;
+                })
+                .attr("d", path)
+                .on("mouseover", function(event, d) {
+                    const stateInfo = stateData[d.properties.postal];
+                    if (stateInfo) {
+                        const candidate = stateInfo.party === 'republican' ? 'Trump' : 'Biden';
+                        tooltip.html(`${d.properties.postal}: ${stateInfo.percentage}% ${candidate}`)
+                            .style("left", (event.pageX + 10) + "px")
+                            .style("top", (event.pageY + 10) + "px")
+                            .style("display", "block");
+                    }
+                })
+                .on("mouseout", function() {
+                    tooltip.style("display", "none");
+                })
+                .on("mousemove", function(event) {
+                    tooltip.style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY + 10) + "px");
+                });
+
+            // Add state labels
+            svg.append("g")
+                .selectAll("text")
+                .data(topojson.feature(us, us.objects.states).features)
+                .enter()
+                .append("text")
+                .attr("class", "state-label")
+                .attr("transform", d => `translate(${path.centroid(d)})`)
+                .text(d => d.properties.postal);
         });
     </script>
 </body>
