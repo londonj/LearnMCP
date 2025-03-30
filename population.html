@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>U.S. States - Population</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -56,40 +57,38 @@
             text-align: center;
             margin-bottom: 2rem;
         }
-        .state-list {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            padding: 20px;
-        }
-        .state-card {
+        .chart-container {
             background-color: white;
-            padding: 15px;
+            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-top: 20px;
         }
-        .state-name {
+        .bar {
+            fill: #3498db;
+            transition: fill 0.3s;
+        }
+        .bar:hover {
+            fill: #2980b9;
+        }
+        .state-label {
+            font-size: 14px;
             font-weight: bold;
-            color: #2c3e50;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
-        .flag {
-            width: 24px;
-            height: 16px;
-            object-fit: cover;
-            border: 1px solid #ddd;
+        .population-label {
+            font-size: 14px;
+            fill: #666;
         }
-        .population {
-            color: #7f8c8d;
-            font-size: 0.9em;
-        }
-        .population-bar {
-            height: 8px;
-            background-color: #3498db;
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 12px;
             border-radius: 4px;
-            margin-top: 8px;
+            font-size: 14px;
+            pointer-events: none;
+            z-index: 1000;
+            display: none;
         }
     </style>
 </head>
@@ -106,259 +105,139 @@
         </div>
     </nav>
     <div class="main-content">
-        <h1>U.S. States by Population</h1>
-        <div class="state-list">
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ca.png" alt="California flag">California</div>
-                <div class="population">39.24 million</div>
-                <div class="population-bar" style="width: 100%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-tx.png" alt="Texas flag">Texas</div>
-                <div class="population">29.53 million</div>
-                <div class="population-bar" style="width: 75%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-fl.png" alt="Florida flag">Florida</div>
-                <div class="population">21.78 million</div>
-                <div class="population-bar" style="width: 55%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ny.png" alt="New York flag">New York</div>
-                <div class="population">19.84 million</div>
-                <div class="population-bar" style="width: 50%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-pa.png" alt="Pennsylvania flag">Pennsylvania</div>
-                <div class="population">12.81 million</div>
-                <div class="population-bar" style="width: 32%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-il.png" alt="Illinois flag">Illinois</div>
-                <div class="population">12.67 million</div>
-                <div class="population-bar" style="width: 32%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-oh.png" alt="Ohio flag">Ohio</div>
-                <div class="population">11.78 million</div>
-                <div class="population-bar" style="width: 30%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ga.png" alt="Georgia flag">Georgia</div>
-                <div class="population">10.71 million</div>
-                <div class="population-bar" style="width: 27%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-nc.png" alt="North Carolina flag">North Carolina</div>
-                <div class="population">10.44 million</div>
-                <div class="population-bar" style="width: 26%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-mi.png" alt="Michigan flag">Michigan</div>
-                <div class="population">10.08 million</div>
-                <div class="population-bar" style="width: 25%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-nj.png" alt="New Jersey flag">New Jersey</div>
-                <div class="population">9.29 million</div>
-                <div class="population-bar" style="width: 23%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-va.png" alt="Virginia flag">Virginia</div>
-                <div class="population">8.63 million</div>
-                <div class="population-bar" style="width: 22%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-wa.png" alt="Washington flag">Washington</div>
-                <div class="population">7.71 million</div>
-                <div class="population-bar" style="width: 19%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-az.png" alt="Arizona flag">Arizona</div>
-                <div class="population">7.15 million</div>
-                <div class="population-bar" style="width: 18%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ma.png" alt="Massachusetts flag">Massachusetts</div>
-                <div class="population">6.98 million</div>
-                <div class="population-bar" style="width: 17%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-tn.png" alt="Tennessee flag">Tennessee</div>
-                <div class="population">6.91 million</div>
-                <div class="population-bar" style="width: 17%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-in.png" alt="Indiana flag">Indiana</div>
-                <div class="population">6.78 million</div>
-                <div class="population-bar" style="width: 17%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-mo.png" alt="Missouri flag">Missouri</div>
-                <div class="population">6.15 million</div>
-                <div class="population-bar" style="width: 15%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-md.png" alt="Maryland flag">Maryland</div>
-                <div class="population">6.17 million</div>
-                <div class="population-bar" style="width: 15%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-wi.png" alt="Wisconsin flag">Wisconsin</div>
-                <div class="population">5.89 million</div>
-                <div class="population-bar" style="width: 15%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-co.png" alt="Colorado flag">Colorado</div>
-                <div class="population">5.77 million</div>
-                <div class="population-bar" style="width: 14%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-mn.png" alt="Minnesota flag">Minnesota</div>
-                <div class="population">5.71 million</div>
-                <div class="population-bar" style="width: 14%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-sc.png" alt="South Carolina flag">South Carolina</div>
-                <div class="population">5.12 million</div>
-                <div class="population-bar" style="width: 13%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-al.png" alt="Alabama flag">Alabama</div>
-                <div class="population">5.02 million</div>
-                <div class="population-bar" style="width: 12%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-la.png" alt="Louisiana flag">Louisiana</div>
-                <div class="population">4.66 million</div>
-                <div class="population-bar" style="width: 11%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ky.png" alt="Kentucky flag">Kentucky</div>
-                <div class="population">4.50 million</div>
-                <div class="population-bar" style="width: 11%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-or.png" alt="Oregon flag">Oregon</div>
-                <div class="population">4.23 million</div>
-                <div class="population-bar" style="width: 10%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ok.png" alt="Oklahoma flag">Oklahoma</div>
-                <div class="population">3.95 million</div>
-                <div class="population-bar" style="width: 10%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ct.png" alt="Connecticut flag">Connecticut</div>
-                <div class="population">3.60 million</div>
-                <div class="population-bar" style="width: 9%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ut.png" alt="Utah flag">Utah</div>
-                <div class="population">3.27 million</div>
-                <div class="population-bar" style="width: 8%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ia.png" alt="Iowa flag">Iowa</div>
-                <div class="population">3.19 million</div>
-                <div class="population-bar" style="width: 8%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-nv.png" alt="Nevada flag">Nevada</div>
-                <div class="population">3.08 million</div>
-                <div class="population-bar" style="width: 7%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ar.png" alt="Arkansas flag">Arkansas</div>
-                <div class="population">3.01 million</div>
-                <div class="population-bar" style="width: 7%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ms.png" alt="Mississippi flag">Mississippi</div>
-                <div class="population">2.96 million</div>
-                <div class="population-bar" style="width: 7%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ks.png" alt="Kansas flag">Kansas</div>
-                <div class="population">2.93 million</div>
-                <div class="population-bar" style="width: 7%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-nm.png" alt="New Mexico flag">New Mexico</div>
-                <div class="population">2.11 million</div>
-                <div class="population-bar" style="width: 5%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ne.png" alt="Nebraska flag">Nebraska</div>
-                <div class="population">1.96 million</div>
-                <div class="population-bar" style="width: 5%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-id.png" alt="Idaho flag">Idaho</div>
-                <div class="population">1.83 million</div>
-                <div class="population-bar" style="width: 4%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-wv.png" alt="West Virginia flag">West Virginia</div>
-                <div class="population">1.79 million</div>
-                <div class="population-bar" style="width: 4%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-hi.png" alt="Hawaii flag">Hawaii</div>
-                <div class="population">1.45 million</div>
-                <div class="population-bar" style="width: 3%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-nh.png" alt="New Hampshire flag">New Hampshire</div>
-                <div class="population">1.37 million</div>
-                <div class="population-bar" style="width: 3%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-me.png" alt="Maine flag">Maine</div>
-                <div class="population">1.36 million</div>
-                <div class="population-bar" style="width: 3%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ri.png" alt="Rhode Island flag">Rhode Island</div>
-                <div class="population">1.09 million</div>
-                <div class="population-bar" style="width: 2%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-mt.png" alt="Montana flag">Montana</div>
-                <div class="population">1.08 million</div>
-                <div class="population-bar" style="width: 2%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-de.png" alt="Delaware flag">Delaware</div>
-                <div class="population">989,948</div>
-                <div class="population-bar" style="width: 2%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-sd.png" alt="South Dakota flag">South Dakota</div>
-                <div class="population">886,667</div>
-                <div class="population-bar" style="width: 2%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-nd.png" alt="North Dakota flag">North Dakota</div>
-                <div class="population">779,094</div>
-                <div class="population-bar" style="width: 1%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-ak.png" alt="Alaska flag">Alaska</div>
-                <div class="population">733,391</div>
-                <div class="population-bar" style="width: 1%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-vt.png" alt="Vermont flag">Vermont</div>
-                <div class="population">643,077</div>
-                <div class="population-bar" style="width: 1%"></div>
-            </div>
-            <div class="state-card">
-                <div class="state-name"><img class="flag" src="https://flagcdn.com/24x18/us-wy.png" alt="Wyoming flag">Wyoming</div>
-                <div class="population">576,851</div>
-                <div class="population-bar" style="width: 1%"></div>
-            </div>
+        <h1>State Population Rankings (2024 Est.)</h1>
+        <div class="chart-container">
+            <svg id="chart"></svg>
         </div>
     </div>
+
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        // State population data (2024 estimates)
+        const stateData = [
+            { state: "California", population: 39613493 },
+            { state: "Texas", population: 30029572 },
+            { state: "Florida", population: 22244823 },
+            { state: "New York", population: 19677151 },
+            { state: "Illinois", population: 12582032 },
+            { state: "Pennsylvania", population: 12972008 },
+            { state: "Ohio", population: 11756058 },
+            { state: "Georgia", population: 10912876 },
+            { state: "North Carolina", population: 10698973 },
+            { state: "Michigan", population: 10034113 },
+            { state: "New Jersey", population: 9261699 },
+            { state: "Virginia", population: 8683619 },
+            { state: "Washington", population: 7785786 },
+            { state: "Arizona", population: 7359197 },
+            { state: "Massachusetts", population: 6981974 },
+            { state: "Tennessee", population: 6975218 },
+            { state: "Indiana", population: 6833037 },
+            { state: "Maryland", population: 6165129 },
+            { state: "Missouri", population: 6168187 },
+            { state: "Wisconsin", population: 5892539 },
+            { state: "Colorado", population: 5839926 },
+            { state: "Minnesota", population: 5707390 },
+            { state: "South Carolina", population: 5190705 },
+            { state: "Alabama", population: 5039877 },
+            { state: "Louisiana", population: 4624047 },
+            { state: "Kentucky", population: 4509394 },
+            { state: "Oregon", population: 4246155 },
+            { state: "Oklahoma", population: 4019800 },
+            { state: "Connecticut", population: 3605944 },
+            { state: "Utah", population: 3380800 },
+            { state: "Iowa", population: 3200517 },
+            { state: "Nevada", population: 3177772 },
+            { state: "Arkansas", population: 3025891 },
+            { state: "Mississippi", population: 2940057 },
+            { state: "Kansas", population: 2937880 },
+            { state: "New Mexico", population: 2117522 },
+            { state: "Nebraska", population: 1961504 },
+            { state: "Idaho", population: 1939033 },
+            { state: "West Virginia", population: 1782959 },
+            { state: "Hawaii", population: 1441553 },
+            { state: "New Hampshire", population: 1388992 },
+            { state: "Maine", population: 1372247 },
+            { state: "Montana", population: 1084225 },
+            { state: "Rhode Island", population: 1097379 },
+            { state: "Delaware", population: 1003384 },
+            { state: "South Dakota", population: 886667 },
+            { state: "North Dakota", population: 774948 },
+            { state: "Alaska", population: 733391 },
+            { state: "Vermont", population: 645570 },
+            { state: "Wyoming", population: 576851 }
+        ];
+
+        // Sort states by population in descending order
+        stateData.sort((a, b) => b.population - a.population);
+
+        // Set up the chart dimensions
+        const margin = { top: 20, right: 200, bottom: 20, left: 200 };
+        const width = 1160 - margin.left - margin.right;
+        const height = 1500 - margin.top - margin.bottom;
+        const barHeight = 25;
+        const barPadding = 5;
+
+        // Create SVG
+        const svg = d3.select("#chart")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        // Create scales
+        const xScale = d3.scaleLinear()
+            .domain([0, d3.max(stateData, d => d.population)])
+            .range([0, width]);
+
+        const yScale = d3.scaleBand()
+            .domain(stateData.map(d => d.state))
+            .range([0, height])
+            .padding(0.1);
+
+        // Create bars
+        svg.selectAll(".bar")
+            .data(stateData)
+            .enter()
+            .append("rect")
+            .attr("class", "bar")
+            .attr("x", 0)
+            .attr("y", d => yScale(d.state))
+            .attr("width", d => xScale(d.population))
+            .attr("height", yScale.bandwidth())
+            .on("mouseover", function(event, d) {
+                const tooltip = d3.select("#tooltip");
+                tooltip.html(`${d.state}: ${d3.format(",")(d.population)}`)
+                    .style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 25) + "px")
+                    .style("display", "block");
+            })
+            .on("mouseout", function() {
+                d3.select("#tooltip").style("display", "none");
+            });
+
+        // Add state labels
+        svg.selectAll(".state-label")
+            .data(stateData)
+            .enter()
+            .append("text")
+            .attr("class", "state-label")
+            .attr("x", -10)
+            .attr("y", d => yScale(d.state) + yScale.bandwidth() / 2)
+            .attr("text-anchor", "end")
+            .attr("alignment-baseline", "middle")
+            .text(d => d.state);
+
+        // Add population labels
+        svg.selectAll(".population-label")
+            .data(stateData)
+            .enter()
+            .append("text")
+            .attr("class", "population-label")
+            .attr("x", d => xScale(d.population) + 10)
+            .attr("y", d => yScale(d.state) + yScale.bandwidth() / 2)
+            .attr("alignment-baseline", "middle")
+            .text(d => d3.format(",")(d.population));
+    </script>
 </body>
 </html> 
