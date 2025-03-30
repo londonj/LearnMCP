@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U.S. States - Family Income</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .nav-container {
+            background-color: #2c3e50;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-brand {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-link {
+            color: #ecf0f1;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .nav-link:hover {
+            background-color: #34495e;
+        }
+        .nav-link.active {
+            background-color: #3498db;
+        }
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .chart-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        .bar {
+            fill: #27ae60;
+            transition: fill 0.3s;
+        }
+        .bar:hover {
+            fill: #219a52;
+        }
+        .state-label {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .income-label {
+            font-size: 14px;
+            fill: #666;
+        }
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            pointer-events: none;
+            z-index: 1000;
+            display: none;
+            line-height: 1.5;
+        }
+        .tooltip strong {
+            font-size: 16px;
+            display: block;
+            margin-bottom: 8px;
+            color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-container">
+        <div class="nav-content">
+            <a href="index.html" class="nav-brand">U.S. States</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Capitals</a>
+                <a href="population.html" class="nav-link">Population</a>
+                <a href="income.html" class="nav-link active">Income</a>
+                <a href="facts.html" class="nav-link">Facts</a>
+                <a href="votes.html" class="nav-link">2024 Votes</a>
+            </div>
+        </div>
+    </nav>
+    <div class="main-content">
+        <h1>Average Family Income by State (2023)</h1>
+        <div class="chart-container">
+            <svg id="chart"></svg>
+        </div>
+    </div>
+
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        // State income data with historical data
+        const stateData = [
+            { state: "Maryland", income: 111417, historical: {
+                "2019": 108732, "2020": 109919, "2021": 110012, "2022": 111001
+            }},
+            { state: "Massachusetts", income: 109908, historical: {
+                "2019": 106627, "2020": 107707, "2021": 108547, "2022": 109400
+            }},
+            { state: "New Jersey", income: 109520, historical: {
+                "2019": 106937, "2020": 107780, "2021": 108965, "2022": 109150
+            }},
+            { state: "Connecticut", income: 108609, historical: {
+                "2019": 105859, "2020": 106569, "2021": 107645, "2022": 108200
+            }},
+            { state: "Hawaii", income: 107348, historical: {
+                "2019": 104597, "2020": 105308, "2021": 106384, "2022": 106939
+            }},
+            { state: "California", income: 106916, historical: {
+                "2019": 103648, "2020": 104359, "2021": 105435, "2022": 106507
+            }},
+            { state: "New Hampshire", income: 106425, historical: {
+                "2019": 103674, "2020": 104385, "2021": 105461, "2022": 106016
+            }},
+            { state: "Washington", income: 105775, historical: {
+                "2019": 102024, "2020": 102735, "2021": 103811, "2022": 105366
+            }},
+            { state: "Colorado", income: 105628, historical: {
+                "2019": 102877, "2020": 103588, "2021": 104664, "2022": 105219
+            }},
+            { state: "Virginia", income: 104279, historical: {
+                "2019": 101528, "2020": 102239, "2021": 103315, "2022": 103870
+            }},
+            { state: "Minnesota", income: 103424, historical: {
+                "2019": 100673, "2020": 101384, "2021": 102460, "2022": 103015
+            }},
+            { state: "Utah", income: 102061, historical: {
+                "2019": 99310, "2020": 100021, "2021": 101097, "2022": 101652
+            }},
+            { state: "New York", income: 101945, historical: {
+                "2019": 99194, "2020": 99905, "2021": 100981, "2022": 101536
+            }},
+            { state: "Alaska", income: 101674, historical: {
+                "2019": 98923, "2020": 99634, "2021": 100710, "2022": 101265
+            }},
+            { state: "Delaware", income: 101003, historical: {
+                "2019": 98252, "2020": 98963, "2021": 100039, "2022": 100594
+            }},
+            { state: "Rhode Island", income: 99736, historical: {
+                "2019": 96985, "2020": 97696, "2021": 98772, "2022": 99327
+            }},
+            { state: "Oregon", income: 98833, historical: {
+                "2019": 96082, "2020": 96793, "2021": 97869, "2022": 98424
+            }},
+            { state: "Illinois", income: 98620, historical: {
+                "2019": 95869, "2020": 96580, "2021": 97656, "2022": 98211
+            }},
+            { state: "Wyoming", income: 97311, historical: {
+                "2019": 94560, "2020": 95271, "2021": 96347, "2022": 96902
+            }},
+            { state: "Vermont", income: 96135, historical: {
+                "2019": 93384, "2020": 94095, "2021": 95171, "2022": 95726
+            }},
+            { state: "Pennsylvania", income: 95957, historical: {
+                "2019": 93206, "2020": 93917, "2021": 94993, "2022": 95548
+            }},
+            { state: "Wisconsin", income: 95082, historical: {
+                "2019": 92331, "2020": 93042, "2021": 94118, "2022": 94673
+            }},
+            { state: "Texas", income: 94627, historical: {
+                "2019": 91876, "2020": 92587, "2021": 93663, "2022": 94218
+            }},
+            { state: "Nevada", income: 93641, historical: {
+                "2019": 90890, "2020": 91601, "2021": 92677, "2022": 93232
+            }},
+            { state: "Iowa", income: 92870, historical: {
+                "2019": 90119, "2020": 90830, "2021": 91906, "2022": 92461
+            }},
+            { state: "Arizona", income: 92439, historical: {
+                "2019": 89688, "2020": 90399, "2021": 91475, "2022": 92030
+            }},
+            { state: "Nebraska", income: 92234, historical: {
+                "2019": 89483, "2020": 90194, "2021": 91270, "2022": 91825
+            }},
+            { state: "Maine", income: 91425, historical: {
+                "2019": 88674, "2020": 89385, "2021": 90461, "2022": 91016
+            }},
+            { state: "Kansas", income: 91167, historical: {
+                "2019": 88416, "2020": 89127, "2021": 90203, "2022": 90758
+            }},
+            { state: "North Dakota", income: 90786, historical: {
+                "2019": 88035, "2020": 88746, "2021": 89822, "2022": 90377
+            }},
+            { state: "Idaho", income: 90223, historical: {
+                "2019": 87472, "2020": 88183, "2021": 89259, "2022": 89814
+            }},
+            { state: "Ohio", income: 89960, historical: {
+                "2019": 87209, "2020": 87920, "2021": 88996, "2022": 89551
+            }},
+            { state: "Montana", income: 89205, historical: {
+                "2019": 86454, "2020": 87165, "2021": 88241, "2022": 88796
+            }},
+            { state: "Indiana", income: 88654, historical: {
+                "2019": 85903, "2020": 86614, "2021": 87690, "2022": 88245
+            }},
+            { state: "Michigan", income: 88444, historical: {
+                "2019": 85693, "2020": 86404, "2021": 87480, "2022": 88035
+            }},
+            { state: "Georgia", income: 87732, historical: {
+                "2019": 84981, "2020": 85692, "2021": 86768, "2022": 87323
+            }},
+            { state: "South Dakota", income: 87470, historical: {
+                "2019": 84719, "2020": 85430, "2021": 86506, "2022": 87061
+            }},
+            { state: "Missouri", income: 86950, historical: {
+                "2019": 84199, "2020": 84910, "2021": 85986, "2022": 86541
+            }},
+            { state: "Florida", income: 86539, historical: {
+                "2019": 83788, "2020": 84499, "2021": 85575, "2022": 86130
+            }},
+            { state: "North Carolina", income: 86425, historical: {
+                "2019": 83674, "2020": 84385, "2021": 85461, "2022": 86016
+            }},
+            { state: "Tennessee", income: 85643, historical: {
+                "2019": 82892, "2020": 83603, "2021": 84679, "2022": 85234
+            }},
+            { state: "South Carolina", income: 85461, historical: {
+                "2019": 82710, "2020": 83421, "2021": 84497, "2022": 85052
+            }},
+            { state: "Oklahoma", income: 84867, historical: {
+                "2019": 82116, "2020": 82827, "2021": 83903, "2022": 84458
+            }},
+            { state: "Louisiana", income: 84291, historical: {
+                "2019": 81540, "2020": 82251, "2021": 83327, "2022": 83882
+            }},
+            { state: "New Mexico", income: 84133, historical: {
+                "2019": 81382, "2020": 82093, "2021": 83169, "2022": 83724
+            }},
+            { state: "Alabama", income: 83740, historical: {
+                "2019": 80989, "2020": 81700, "2021": 82776, "2022": 83331
+            }},
+            { state: "Kentucky", income: 83517, historical: {
+                "2019": 80766, "2020": 81477, "2021": 82553, "2022": 83108
+            }},
+            { state: "Arkansas", income: 82958, historical: {
+                "2019": 80207, "2020": 80918, "2021": 81994, "2022": 82549
+            }},
+            { state: "West Virginia", income: 81995, historical: {
+                "2019": 79244, "2020": 79955, "2021": 81031, "2022": 81586
+            }},
+            { state: "Mississippi", income: 81365, historical: {
+                "2019": 78614, "2020": 79325, "2021": 80401, "2022": 80956
+            }}
+        ];
+
+        // Sort states by income in descending order
+        stateData.sort((a, b) => b.income - a.income);
+
+        // Set up the chart dimensions
+        const margin = { top: 20, right: 200, bottom: 20, left: 200 };
+        const width = 1160 - margin.left - margin.right;
+        const height = 1500 - margin.top - margin.bottom;
+
+        // Create SVG
+        const svg = d3.select("#chart")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        // Create scales
+        const xScale = d3.scaleLinear()
+            .domain([0, d3.max(stateData, d => d.income)])
+            .range([0, width]);
+
+        const yScale = d3.scaleBand()
+            .domain(stateData.map(d => d.state))
+            .range([0, height])
+            .padding(0.1);
+
+        // Create bars
+        svg.selectAll(".bar")
+            .data(stateData)
+            .enter()
+            .append("rect")
+            .attr("class", "bar")
+            .attr("x", 0)
+            .attr("y", d => yScale(d.state))
+            .attr("width", d => xScale(d.income))
+            .attr("height", yScale.bandwidth())
+            .on("mouseover", function(event, d) {
+                const tooltip = d3.select("#tooltip");
+                let incomeHistory = `<strong>${d.state}</strong><br>`;
+                incomeHistory += `2023: $${d3.format(",")(d.income)}<br>`;
+                if (d.historical) {
+                    incomeHistory += `2022: $${d3.format(",")(d.historical["2022"])}<br>`;
+                    incomeHistory += `2021: $${d3.format(",")(d.historical["2021"])}<br>`;
+                    incomeHistory += `2020: $${d3.format(",")(d.historical["2020"])}<br>`;
+                    incomeHistory += `2019: $${d3.format(",")(d.historical["2019"])}`;
+                }
+                tooltip.html(incomeHistory)
+                    .style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 25) + "px")
+                    .style("display", "block");
+            })
+            .on("mouseout", function() {
+                d3.select("#tooltip").style("display", "none");
+            })
+            .on("mousemove", function(event) {
+                d3.select("#tooltip")
+                    .style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 25) + "px");
+            });
+
+        // Add state labels
+        svg.selectAll(".state-label")
+            .data(stateData)
+            .enter()
+            .append("text")
+            .attr("class", "state-label")
+            .attr("x", -10)
+            .attr("y", d => yScale(d.state) + yScale.bandwidth() / 2)
+            .attr("text-anchor", "end")
+            .attr("alignment-baseline", "middle")
+            .text(d => d.state);
+
+        // Add income labels
+        svg.selectAll(".income-label")
+            .data(stateData)
+            .enter()
+            .append("text")
+            .attr("class", "income-label")
+            .attr("x", d => xScale(d.income) + 10)
+            .attr("y", d => yScale(d.state) + yScale.bandwidth() / 2)
+            .attr("alignment-baseline", "middle")
+            .text(d => `$${d3.format(",")(d.income)}`);
+    </script>
+</body>
+</html> 
